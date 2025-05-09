@@ -234,7 +234,7 @@ def print_dns_stats(df):
 
 
 # Run the feature extraction
-label_input = "B"  # This should be changed to user input in real usage
+label_input = 0  # This should be changed to user input in real usage
 pcap_path = "normal_00000_20230805150331.pcap"  # Replace with actual uploaded file path
 df = extract_features_from_pcap(pcap_path, label_input)
 

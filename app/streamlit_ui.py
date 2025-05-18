@@ -48,8 +48,8 @@ if uploaded_file:
             doh_pred_df = predict_with_doh_deepfm_model(doh_df, model_path=doh_model_path)
 
             # Step 3: Detection extraction
-            dns_detections = extract_detections(dns_pred_df, "DNS Tunneling")
-            doh_detections = extract_detections(doh_pred_df, "DoH Tunneling")
+            dns_detections = extract_detections(dns_pred_df, "DNS Tunneling") if dns_pred_df is not None else []
+            doh_detections = extract_detections(doh_pred_df, "DoH Tunneling") if doh_pred_df is not None else []
             all_detections = dns_detections + doh_detections
 
             # Step 4: Display detections
@@ -61,6 +61,7 @@ if uploaded_file:
                 # Step 5: Run LLM agent
                 st.subheader("Analysis Report")
                 prompt = build_prompt(all_detections)
+                print(f"Prompt sent:\n{prompt}")
                 report = run_ollama(prompt)
 
                 # Display report in styled container
@@ -74,6 +75,7 @@ if uploaded_file:
 
                 # Save report
                 timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+                os.makedirs("static", exist_ok=True)
                 report_path = f"static/report_{timestamp}.txt"
                 with open(report_path, "w", encoding="utf-8") as f:
                     f.write(report)

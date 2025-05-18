@@ -1,3 +1,5 @@
+from typing import Optional
+
 import torch
 import torch.nn as nn
 import pandas as pd
@@ -30,7 +32,7 @@ class DNSTunnelClassifier(nn.Module):
         return self.sig(self.out(x))
 
 
-def predict_with_dns_model(df: pd.DataFrame, model_path: str = "dns_tunnel_classifier.pt") -> pd.DataFrame:
+def predict_with_dns_model(df: pd.DataFrame, model_path: str = "dns_tunnel_classifier.pt") -> Optional[pd.DataFrame]:
     """
     Predict using a PyTorch model saved as state_dict.
 
@@ -41,11 +43,17 @@ def predict_with_dns_model(df: pd.DataFrame, model_path: str = "dns_tunnel_class
     Returns:
         pd.DataFrame: DataFrame with prediction_score and predicted_label columns added.
     """
+    if df.empty:
+        print("No DNS traffic found in the pcap file. Skipping prediction.")
+        return None
+
     # Drop label column if it exists
     df = df.drop(columns=["label"], errors="ignore")
 
     # Clean any NaN or infinite values
     df = df.fillna(0).replace([float("inf"), float("-inf")], 0)
+    df = df.drop(columns=['dst_ip_len', 'src_ip_len'], errors='ignore')
+    df = df[df['response_size'] != 0.0]
 
     # Convert DataFrame to torch tensor
     X = torch.tensor(df.values, dtype=torch.float32)

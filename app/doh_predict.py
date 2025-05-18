@@ -1,3 +1,5 @@
+from typing import Optional
+
 import pandas as pd
 import numpy as np
 import tensorflow as tf
@@ -5,7 +7,7 @@ from sklearn.preprocessing import StandardScaler
 from deepctr.feature_column import DenseFeat, get_feature_names
 
 
-def predict_with_doh_deepfm_model(df: pd.DataFrame, model_path: str = "doh_deepfm_model") -> pd.DataFrame:
+def predict_with_doh_deepfm_model(df: pd.DataFrame, model_path: str = "doh_deepfm_model") -> Optional[pd.DataFrame]:
     """
     Perform prediction using the DeepFM SavedModel on a given input DataFrame.
 
@@ -16,6 +18,10 @@ def predict_with_doh_deepfm_model(df: pd.DataFrame, model_path: str = "doh_deepf
     Returns:
         pd.DataFrame: DataFrame with added 'prediction_score' and 'predicted_label' columns.
     """
+    if df.empty:
+        print("ℹ️ No DoH traffic found in PCAP file. Skipping DoH prediction.")
+        return None
+
     # --- 1. Define dense feature list by removing non-numeric or ID-related columns ---
     drop_cols = ['SourceIP', 'DestinationIP', 'TimeStamp', 'DestinationPort', 'SourcePort', 'Label']
     dense_features = [col for col in df.columns if col not in drop_cols]

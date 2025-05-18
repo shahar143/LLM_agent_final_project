@@ -39,6 +39,7 @@ The report should include:
 - The type of tunneling attack and how it was detected.
 - Risk level of the findings.
 - Recommended mitigation or follow-up actions.
+Do not generate more than 100 words in the report. make it clear.
 
 Detections:
 {json.dumps(detections, indent=2)}
@@ -55,7 +56,8 @@ def run_ollama(prompt, model_name="mistral"):
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
-        text=True
+        text=True,
+        encoding= "utf-8"
     )
     output, _ = process.communicate(prompt)
     return output.strip()

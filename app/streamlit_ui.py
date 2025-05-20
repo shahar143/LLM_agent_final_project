@@ -56,7 +56,7 @@ if uploaded_file:
             st.subheader("Detected Events")
             if all_detections:
                 display_df = pd.DataFrame(all_detections)
-                st.table(display_df)
+                st.dataframe(display_df, use_container_width=True)
 
                 # Step 5: Run LLM agent
                 st.subheader("Analysis Report")
@@ -81,6 +81,11 @@ if uploaded_file:
                     f.write(report)
 
                 # Download button
-                st.download_button("Download Report (TXT)", data=report, file_name="report.txt")
+                st.download_button(
+                    label="⬇️ Download Report (TXT)",
+                    data=report,
+                    file_name="analysis_report.txt",
+                    mime="text/plain"
+                )
             else:
                 st.info("✅ No tunneling activity detected in this file.")

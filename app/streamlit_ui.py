@@ -53,14 +53,15 @@ if uploaded_file:
             all_detections = dns_detections + doh_detections
 
             # Step 4: Display detections
-            st.subheader("Detected Events")
+            st.subheader("Number of Detected Events and Their Suspicious Score")
             if all_detections:
                 display_df = pd.DataFrame(all_detections)
                 st.dataframe(display_df, use_container_width=True)
 
+                limited_detection = all_detections[:8]
                 # Step 5: Run LLM agent
                 st.subheader("Analysis Report")
-                prompt = build_prompt(all_detections)
+                prompt = build_prompt(limited_detection)
                 print(f"Prompt sent:\n{prompt}")
                 report = run_ollama(prompt)
 

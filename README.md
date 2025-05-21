@@ -83,33 +83,70 @@ After feature extraction:
 
 ## API Usage
 
-### Endpoint: `/upload`
+## 🚀 Running the App with Streamlit
 
-* **Method**: POST
-* **Payload**: `.pcap` file (form-data)
-* **Response**: JSON with:
+### ✅ Prerequisites
 
-  * Extracted feature rows
-  * Statistical summary
-  * LLM analysis text
+Make sure you have the following installed:
 
-Example using Python:
+* **Python 3.8 or 3.9**
+* **Conda** (recommended)
+* This repository cloned locally
+---
 
-```python
-import requests
+### ⚙️ Setup Instructions
 
-with open("file.pcap", "rb") as f:
-    res = requests.post("http://localhost:5000/upload", files={"file": f})
-    print(res.json())
+1. **Clone the repository**
+
+```bash
+git clone <repo-url>
+cd DNS-Tunnel-Datasets
 ```
 
-## Future Work
+2. **Create and activate a Conda environment**
 
-* Build a frontend drag-and-drop UI to upload `.pcap` files.
-* Train and evaluate ML classifiers using the extracted dataset.
-* Add automatic label prediction via LLM + classifier.
-* Extend feature set with timing/flow-level metadata.
+```bash
+conda create -n dnstunnel-env python=3.8
+conda activate dnstunnel-env
+```
 
+3. **Install required packages**
+
+```bash
+pip install -r requirements.txt
+```
+
+4. **Run the Streamlit app**
+
+```bash
+streamlit run app/streamlit_ui.py
+```
+
+This will launch the Streamlit UI in your browser at [http://localhost:8501](http://localhost:8501).
+
+---
+
+## 🧠 How the App Works
+
+* Upload your `.pcap` file via the UI
+* The app extracts relevant DNS features
+* It applies pre-trained models to detect suspicious patterns
+* Results and visualizations are displayed in real time
+
+---
+
+## 📂 Project Structure
+
+```
+DNS-Tunnel-Datasets/
+│
+├── app/
+│   └── streamlit_ui.py         # Streamlit app file
+│
+├── parse_pcap_files_req_n_resp.py  # PCAP feature extractor
+├── requirements.txt            # Python dependencies
+└── README.md                   # You're here!
+```
 ---
 
 This project serves as both a practical tool and an educational framework for understanding and detecting DNS tunneling using hybrid ML + LLM systems.

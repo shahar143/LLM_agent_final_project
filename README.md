@@ -116,7 +116,15 @@ conda activate dnstunnel-env
 pip install -r requirements.txt
 ```
 
-4. **Run the Streamlit app**
+4. **Run Ollama Model In Background**
+
+In a different Terminal, run: 
+
+```cmd
+Ollama run mistral
+```
+
+5. **Run the Streamlit app**
 
 ```bash
 streamlit run app/streamlit_ui.py
